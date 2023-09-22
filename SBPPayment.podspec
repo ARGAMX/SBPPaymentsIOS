@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'SBPPayment'
-  s.version          = '1.3.1'
+  s.version          = '1.3.2b'
   s.summary          = 'SBPPayment (Old SBPWidget by Mykola Hordynchuk) provide modal window with list of banks which support sbp'
 
 # This description is used to generate tags and improve search results.
