@@ -25,6 +25,7 @@ protocol SBPWidgetModuleOutput: AnyObject {
 
 protocol SBPWidgetModuleInput: AnyObject {
   var moduleOutput: SBPWidgetModuleOutput? { get set }
+  func setBanksJsonURL(_ url: String?)
 }
 
 
@@ -37,6 +38,11 @@ final class SBPWidgetPresenter: SBPWidgetModuleInput {
   var moduleOutput: SBPWidgetModuleOutput?
   
   private var selectedScheme: String?
+  private var banksJsonURL: String?
+  
+  func setBanksJsonURL(_ url: String?) {
+    self.banksJsonURL = url
+  }
   
   func handleDismiss() {
     moduleOutput?.selectedBankApplicationScheme(selectedScheme)
@@ -47,7 +53,7 @@ final class SBPWidgetPresenter: SBPWidgetModuleInput {
 extension SBPWidgetPresenter: SBPWidgetViewToPresenterProtocol {
   func onViewFirstWillAppear() {
     view?.setupInitialState()
-    interactor?.getBankApplications()
+    interactor?.getBankApplications(banksJsonURL: banksJsonURL)
   }
   
   func onViewEvent(_ event: SBPWidgetViewEvent) {
