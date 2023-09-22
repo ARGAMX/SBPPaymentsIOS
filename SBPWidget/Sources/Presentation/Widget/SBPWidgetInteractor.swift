@@ -9,10 +9,15 @@
 import UIKit
 
 protocol SBPWidgetPresenterToInteractorProtocol: AnyObject {
-  func getBankApplications()
+  func getBankApplications(banksJsonURL: String?)
   func getApplicationSchema(with index: Int)
 }
 
+extension SBPWidgetPresenterToInteractorProtocol {
+  func getBankApplications() {
+    getBankApplications(banksJsonURL: nil)
+  }
+}
 
 final class SBPWidgetInteractor {
   weak var presenter: SBPWidgetInteractorToPresenterProtocol?
@@ -22,9 +27,9 @@ final class SBPWidgetInteractor {
 
 
 extension SBPWidgetInteractor: SBPWidgetPresenterToInteractorProtocol {
-  func getBankApplications() {
+  func getBankApplications(banksJsonURL: String? = nil) {
     do {
-      let apps = try sbpBankService.getBankApplications()
+      let apps = try sbpBankService.getBankApplications(banksJsonURL: banksJsonURL)
       checkiOSApplications(with: apps)
       bankApps = apps.filter { $0.isInstalled }
       presenter?.onInteractorReceivedBankApplications(bankApps)

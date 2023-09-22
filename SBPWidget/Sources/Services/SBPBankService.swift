@@ -9,14 +9,23 @@
 import Foundation
 
 protocol SBPBankServiceProtocol {
-  func getBankApplications() throws -> [SBPBank]
+  func getBankApplications(banksJsonURL: String?) throws -> [SBPBank]
+}
+
+extension SBPBankServiceProtocol {
+  func sgetBankApplications() throws -> [SBPBank] {
+    try getBankApplications(banksJsonURL: nil)
+  }
 }
 
 final class SBPBankService: SBPBankServiceProtocol {
-  private let url = "https://qr.nspk.ru/proxyapp/c2bmembers.json"
+  private let defaultUrl = "https://qr.nspk.ru/proxyapp/c2bmembers.json"
   
-  func getBankApplications() throws -> [SBPBank] {
-    let url = URL(string: url)!
+  func getBankApplications(banksJsonURL: String? = nil) throws -> [SBPBank] {
+    var url = URL(string: defaultUrl)!
+    if let banksJsonURL = banksJsonURL, let customUrl = URL(string: banksJsonURL) {
+      url = customUrl
+    }
     let data = try Data(contentsOf: url, options: .alwaysMapped)
     let decoder = JSONDecoder()
     let jsonData = try decoder.decode(SBPBankRaw.self, from: data)

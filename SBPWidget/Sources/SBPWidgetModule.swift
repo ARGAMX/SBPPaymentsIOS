@@ -28,7 +28,7 @@ public class SBPWidgetModule {
         sbpModule.router.transition.open(sbpModule.viewable.viewController, from: viewController, completion: nil)
     }
 
-    public func show(on viewController: UIViewController, backgroundColor: Int, textColor: Int, completion: @escaping CompletionHandler) {
+    public func show(on viewController: UIViewController, backgroundColor: Int, textColor: Int, completion: @escaping CompletionHandler, banksJsonURL: String? = nil) {
         App.Colors.sheetBackground = UIColor(argb: backgroundColor)
         App.Colors.textColor = UIColor(argb: textColor)
         if colorIsDark(rgb: backgroundColor) {
@@ -40,6 +40,7 @@ public class SBPWidgetModule {
         self.completion = completion
         let sbpModule = AnyModuleFactory().create(SBPWidgetModuleFactory.self)
         sbpModule.input.moduleOutput = self
+        sbpModule.input.setBanksJsonURL(banksJsonURL)
         sbpModule.router.transition.open(sbpModule.viewable.viewController, from: viewController, completion: nil)
     }
 
